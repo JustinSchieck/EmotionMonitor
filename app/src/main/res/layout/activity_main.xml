@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.justin.emotionmonitorv3.MainActivity"
+    android:background="@drawable/backgroundv2"
+   >
+
+
+
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/happyBtn"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:alpha="0.25"
+                android:color="#e5e5e5" />
+
+        <ImageButton
+            android:id="@+id/madBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:alpha="0.25"
+            android:color="#e5e5e5" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/sadBtn"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:alpha="0.25"
+                android:color="#e5e5e5" />
+
+            <ImageButton
+                android:id="@+id/mehBtn"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:alpha="0.25"
+                android:color="#e5e5e5" />
+
+    </LinearLayout>
+</LinearLayout>
