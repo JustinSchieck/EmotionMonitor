@@ -3,6 +3,7 @@ package com.example.justin.emotionmonitorv3;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
+import android.os.PowerManager;
 
 
 import java.io.*;
@@ -24,21 +25,18 @@ public class MainActivity extends AppCompatActivity {
     String data;
     String error;
 
-    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00"));
-    Date currentLocalTime = cal.getTime();
-    DateFormat date = new SimpleDateFormat("HH:mm:ss");
-    // you can get seconds by adding  "...:ss" to it
-    String localTime = date.format(currentLocalTime);
+    //Vibration and PowerManager
+    PowerManager.WakeLock wl;
 
-    //methods
-    String path =
-            Environment.getExternalStorageDirectory() + File.separator  + "Emotion_Data";
-    // Create the folder.
-    File folder = new File(path);
 
-    // Create the file.
-    File file = new File(folder, "EmotionData.csv");
 
+
+      //Timer Varilbales
+//    private Timer timer = new Timer();
+//    TimerTask timerTask;
+//    int m_interval = 30000; // 5 seconds by default, can be changed later
+//
+//    Handler handler = new Handler();
 
 
 
@@ -47,10 +45,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
-        vib.vibrate(500);
+        vib.vibrate(1500);
+        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
+
+        wl.acquire();
+
+
     }
+
+
 
 
     public void addListenerOnButton() {
@@ -68,12 +74,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Log.i(TAG, "Happy");
+
+
+
+                Calendar c = Calendar.getInstance();
+                int Seconds = c.get(Calendar.SECOND);
+                int Minutes = c.get(Calendar.MINUTE);
+                int Hours = c.get(Calendar.HOUR);
+
+                String Sec = String.valueOf(Seconds);
+                String Min = String.valueOf(Minutes);
+                String Hour = String.valueOf(Hours);
+
+                String localTime = Hour + ":" + Min + ":" + Sec;
+
                 data = (localTime + "," + "Happy" + "," + "\n");
                 Toast.makeText(getApplicationContext(), "Thank you!", Toast.LENGTH_SHORT).show();
                 try {
                     writeData();
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("Exception", "File write failed: " + e.toString());
                     error = e.toString();
                     writeError();
@@ -84,12 +103,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Log.i(TAG, "Sad");
+
+                Calendar c = Calendar.getInstance();
+                int Seconds = c.get(Calendar.SECOND);
+                int Minutes = c.get(Calendar.MINUTE);
+                int Hours = c.get(Calendar.HOUR);
+
+                String Sec = String.valueOf(Seconds);
+                String Min = String.valueOf(Minutes);
+                String Hour = String.valueOf(Hours);
+
+                String localTime = Hour + ":" + Min + ":" + Sec;
+
                 data = (localTime + "," + "Sad" + "," + "\n");
                 Toast.makeText(getApplicationContext(), "Thank you!", Toast.LENGTH_SHORT).show();
                 try {
                     writeData();
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("Exception", "File write failed: " + e.toString());
                     error = e.toString();
                     writeError();
@@ -100,12 +130,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Log.i(TAG, "Mad");
-                data = (localTime + "," + "Mad" + "," + "\n" );
+
+                Calendar c = Calendar.getInstance();
+                int Seconds = c.get(Calendar.SECOND);
+                int Minutes = c.get(Calendar.MINUTE);
+                int Hours = c.get(Calendar.HOUR);
+
+                String Sec = String.valueOf(Seconds);
+                String Min = String.valueOf(Minutes);
+                String Hour = String.valueOf(Hours);
+
+                String localTime = Hour + ":" + Min + ":" + Sec;
+
+                data = (localTime + "," + "Mad" + "," + "\n");
                 Toast.makeText(getApplicationContext(), "Thank you!", Toast.LENGTH_SHORT).show();
                 try {
                     writeData();
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("Exception", "File write failed: " + e.toString());
                     error = e.toString();
                     writeError();
@@ -117,12 +158,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Log.i(TAG, "IDK");
-                data = (localTime + ","+ "I dont know" + "," + "\n");
+
+                Calendar c = Calendar.getInstance();
+                int Seconds = c.get(Calendar.SECOND);
+                int Minutes = c.get(Calendar.MINUTE);
+                int Hours = c.get(Calendar.HOUR);
+
+                String Sec = String.valueOf(Seconds);
+                String Min = String.valueOf(Minutes);
+                String Hour = String.valueOf(Hours);
+
+                String localTime = Hour + ":" + Min + ":" + Sec;
+
+                data = (localTime + "," + "I dont know" + "," + "\n");
                 Toast.makeText(getApplicationContext(), "Thank you!", Toast.LENGTH_SHORT).show();
                 try {
                     writeData();
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("Exception", "File write failed: " + e.toString());
                     error = e.toString();
                     writeError();
@@ -135,25 +187,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     //writing to file
-    public void writeData(){
+    public void writeData() {
 
         try {
             writeToFile(data);
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
 
     }
+
     //writing to file
-    public void writeError(){
+    public void writeError() {
 
         try {
             writeToFileError(error);
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
 
@@ -171,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         File file = new File(path, "Emotion.csv");
-        try
-        {
+        try {
             file.createNewFile();
             FileOutputStream fOut = new FileOutputStream(file, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
@@ -180,31 +230,26 @@ public class MainActivity extends AppCompatActivity {
 
             myOutWriter.close();
 
-             fOut.flush();
+            fOut.flush();
             fOut.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
-    public void writeToFileError(String data)
-    {
+    public void writeToFileError(String data) {
         final File path =
                 Environment.getExternalStoragePublicDirectory
                         (
                                 Environment.DIRECTORY_DCIM + "/Errors/"
                         );
 
-        if(!path.exists())
-        {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
         File file = new File(path, "EmotionError.txt");
-        try
-        {
+        try {
             file.createNewFile();
             FileOutputStream fOut = new FileOutputStream(file, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
@@ -214,13 +259,10 @@ public class MainActivity extends AppCompatActivity {
 
             // fOut.flush();
             fOut.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
-
 
 
 }
